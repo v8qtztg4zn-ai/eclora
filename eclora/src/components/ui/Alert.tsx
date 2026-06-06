@@ -3,10 +3,13 @@
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface AlertProps {
+export type AlertState = {
+  show: boolean;
   type: "success" | "error";
   message: string;
-  show: boolean;
+};
+
+interface AlertProps extends AlertState {
   onClose?: () => void;
 }
 

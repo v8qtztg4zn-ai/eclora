@@ -1,3 +1,4 @@
+```typescriptreact
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,7 +7,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Alert } from "@/components/ui/Alert";
+import { Alert, type AlertState } from "@/components/ui/Alert";
 import { formatPrice } from "@/lib/utils";
 import { CATEGORIES } from "@/lib/validations";
 import type { Product } from "@/types";
@@ -34,7 +35,11 @@ export default function AdminProductsPage() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(emptyProduct);
-  const [alert, setAlert] = useState({ show: false, type: "success" as const, message: "" });
+  const [alert, setAlert] = useState<AlertState>({
+    show: false,
+    type: "success",
+    message: "",
+  });
 
   const fetchProducts = () => {
     fetch("/api/products")
@@ -253,3 +258,5 @@ export default function AdminProductsPage() {
     </div>
   );
 }
+
+```

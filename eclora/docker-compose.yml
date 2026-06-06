@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: eclora-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: eclora
+      POSTGRES_PASSWORD: eclora_secret
+      POSTGRES_DB: eclora
+    ports:
+      - "5432:5432"
+    volumes:
+      - eclora_pgdata:/var/lib/postgresql/data
+
+volumes:
+  eclora_pgdata:

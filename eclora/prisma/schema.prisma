@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  sku          String   @unique
+  category     String
+  description  String   @db.Text
+  price        Float
+  carat        Float?
+  cut          String?
+  color        String?
+  clarity      String?
+  metal        String?
+  diamondType  String   @default("Lab-Grown")
+  stockStatus  String   @default("In Stock")
+  featured     Boolean  @default(false)
+  images       String[]
+  views        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orderItems   OrderItem[]
+  wishlists    Wishlist[]
+  inquiries    Inquiry[]
+}
+
+model Customer {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  phone        String?
+  notes        String?       @db.Text
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  inquiries    Inquiry[]
+  orders       Order[]
+  appointments Appointment[]
+  wishlists    Wishlist[]
+}
+
+model Inquiry {
+  id              String    @id @default(cuid())
+  type            String    @default("general")
+  name            String
+  email           String
+  phone           String?
+  jewelryType     String?
+  budget          String?
+  diamondSize     String?
+  metalPreference String?
+  message         String?   @db.Text
+  referenceImage  String?
+  productId       String?
+  product         Product?  @relation(fields: [productId], references: [id])
+  customerId      String?
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  status          String    @default("New")
+  adminNotes      String?   @db.Text
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  customerId    String
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  status        String      @default("Pending")
+  paymentStatus String      @default("Pending")
+  totalAmount   Float
+  deliveryDate  DateTime?
+  customerNotes String?     @db.Text
+  adminNotes    String?     @db.Text
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+  price     Float
+}
+
+model Appointment {
+  id         String    @id @default(cuid())
+  date       DateTime
+  time       String
+  purpose    String
+  status     String    @default("Pending")
+  notes      String?   @db.Text
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  name       String
+  email      String
+  phone      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Wishlist {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  sessionId  String?
+  createdAt  DateTime @default(now())
+
+  @@unique([productId, sessionId])
+}
+
+model SiteSettings {
+  id             String   @id @default("default")
+  brandName      String   @default("ECLORA")
+  tagline        String   @default("Not mined, but designed to shine.")
+  heroText       String   @default("Luxury redefined for a conscious generation.")
+  logoUrl        String?
+  email          String   @default("hello@eclora.com")
+  phone          String?
+  whatsapp       String?
+  address        String?
+  instagram      String?
+  pinterest      String?
+  tiktok         String?
+  updatedAt      DateTime @updatedAt
+}

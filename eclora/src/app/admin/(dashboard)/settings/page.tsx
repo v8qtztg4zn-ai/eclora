@@ -1,9 +1,10 @@
+```typescriptreact
 "use client";
 
 import { useEffect, useState } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Alert } from "@/components/ui/Alert";
+import { Alert, type AlertState } from "@/components/ui/Alert";
 
 interface Settings {
   brandName: string;
@@ -23,7 +24,11 @@ export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<Settings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [alert, setAlert] = useState({ show: false, type: "success" as const, message: "" });
+  const [alert, setAlert] = useState<AlertState>({
+    show: false,
+    type: "success",
+    message: "",
+  });
 
   useEffect(() => {
     fetch("/api/settings")
@@ -122,3 +127,5 @@ export default function AdminSettingsPage() {
     </div>
   );
 }
+
+```

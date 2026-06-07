@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Alert } from "@/components/ui/Alert";
+import { Alert, type AlertState } from "@/components/ui/Alert";
 
 interface Settings {
   brandName: string;

@@ -1,17 +1,16 @@
-```typescriptreact
 "use client";
 
 import { useState } from "react";
-import { Alert, type AlertState } from "@/components/ui/Alert";
+import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
 
 export function AppointmentForm() {
   const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState<AlertState>({
-    show: false,
-    type: "success",
-    message: "",
-  });
+  const [alert, setAlert] = useState<{
+    show: boolean;
+    type: "success" | "error";
+    message: string;
+  }>({ show: false, type: "success", message: "" });
 
   const [form, setForm] = useState({
     name: "",
@@ -24,7 +23,7 @@ export function AppointmentForm() {
   });
 
   const handleChange = (
-    e: React.ChangeEvent
+    e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
@@ -182,5 +181,3 @@ export function AppointmentForm() {
     </>
   );
 }
-
-```

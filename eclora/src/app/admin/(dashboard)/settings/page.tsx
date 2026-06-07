@@ -45,13 +45,11 @@ export default function AdminSettingsPage() {
     e.preventDefault();
     if (!settings) return;
     setSaving(true);
-
     const res = await fetch("/api/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(settings),
     });
-
     if (res.ok) {
       setAlert({ show: true, type: "success", message: "Settings saved successfully" });
     } else {
@@ -67,7 +65,6 @@ export default function AdminSettingsPage() {
     <div>
       <Alert {...alert} onClose={() => setAlert((p) => ({ ...p, show: false }))} />
       <AdminHeader title="Settings" subtitle="Manage brand and contact details" />
-
       <form onSubmit={handleSave} className="glass p-8 max-w-2xl space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -79,12 +76,10 @@ export default function AdminSettingsPage() {
             <input className="input-field" value={settings.tagline} onChange={(e) => handleChange("tagline", e.target.value)} />
           </div>
         </div>
-
         <div>
           <label className="label-field">Hero Text</label>
           <input className="input-field" value={settings.heroText} onChange={(e) => handleChange("heroText", e.target.value)} />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="label-field">Email</label>
@@ -95,7 +90,7 @@ export default function AdminSettingsPage() {
             <input className="input-field" value={settings.phone || ""} onChange={(e) => handleChange("phone", e.target.value)} />
           </div>
           <div>
-            <label className="label-field">WhatsApp Number</label>
+            <label className="label-field">WhatsApp</label>
             <input className="input-field" value={settings.whatsapp || ""} onChange={(e) => handleChange("whatsapp", e.target.value)} />
           </div>
           <div>
@@ -103,7 +98,6 @@ export default function AdminSettingsPage() {
             <input className="input-field" value={settings.address || ""} onChange={(e) => handleChange("address", e.target.value)} />
           </div>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label className="label-field">Instagram</label>
@@ -118,7 +112,6 @@ export default function AdminSettingsPage() {
             <input className="input-field" value={settings.tiktok || ""} onChange={(e) => handleChange("tiktok", e.target.value)} />
           </div>
         </div>
-
         <button type="submit" disabled={saving} className="btn-primary disabled:opacity-50">
           {saving ? "Saving..." : "Save Settings"}
         </button>
